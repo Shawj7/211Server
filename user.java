@@ -12,14 +12,25 @@ class user implements Runnable
        buf=b;
      }
 
+     public int getID()
+     {
+       return id;
+     }
+     public int getElements()
+     {
+       return elements;
+     }
+
      public void run()
      {
        int n=0;
-       while(elements>0)
+       while(n<elements)
        {
-         buf.add(n);
+         buf.add(n, id, elements);
+         //System.out.println("User " + id + " adds an element " + (n+1) + "/" + elements);
+         
          n++;
-         elements--;
+         //elements--;
        }
      }
        

@@ -6,6 +6,7 @@ public class startServer
 	private int numUsers=0;
 	private int numServers=0;
 	private int bufferSize=0;
+	private int reference=0;
 	private Scanner scan = new Scanner(System.in); //for reading user input
 
 
@@ -30,16 +31,33 @@ public class startServer
 	webserver servers[] = new webserver[numServers];
 	Thread uThreads[] = new Thread[numUsers];
 	Thread wThreads[] = new Thread[numServers];
-	
+	int uElemForEach=(elements/numUsers); //elements for each user
+	int wElemForEach=(elements/numServers); //elements for each webserver
+
+	reference=elements; //keep the total number of elements for splitting across servers	
 	for(int i=0;i<numUsers;i++) //create all users and threads and start them
 	{
-		users[i]= new user(i, (elements/numUsers), b);
+		/*if((elements%numUsers)!=0)
+		{
+			uElemForEach=(elements%numUsers);
+		}
+		else
+		{
+			uElemForEach=(elements/numUsers);
+		}*/
+		users[i]= new user(i, uElemForEach, b);
+		elements=elements-uElemForEach; //subtract elements given from total
 		uThreads[i]=new Thread(users[i]);
 		uThreads[i].start();
 	}
 	for(int i=0;i<numServers;i++) //create all webservers and threads and start them
 	{
-		servers[i]= new webserver(i, (elements/numServers), b);
+		if(reference<wElemForEach)
+		{
+			wElemForEach=reference; //give the user remaining elements
+		}
+		servers[i]= new webserver(i, wElemForEach, b);
+		reference=reference-wElemForEach;
 		wThreads[i]=new Thread(servers[i]);
 		wThreads[i].start();
 	}
@@ -65,13 +83,21 @@ public class startServer
 									
 	
 												//Equally subdivide user inputted elements across all user objects
-
 	System.out.println("-----------------------");
+
+	for(int i=0; i<numUsers;i++)
+	{
+		System.out.println("User "+users[i].getID()+" created "+users[i].getElements()+" elements");
+	}
+	for(int i=0; i<numServers;i++)
+	{
+			System.out.println("Server "+servers[i].getID()+" consumed "+servers[i].getElements()+" elements");
+	}
 	
 												//Outputs the total number of elements added/removed from user and webserver		
-
 	System.out.println("-----------------------");
-	//System.out.println("Buffer has " + X + " elements remaining");			//Check to see buffer if all elements produced from users have been successfully removed by webservers
+
+	System.out.println("Buffer has " + b.size() + " elements remaining");
 	System.out.println("-----------------------");
 												//Checks if all users and web servers successfully finished
 				

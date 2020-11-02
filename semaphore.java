@@ -17,6 +17,7 @@ public class semaphore
         try
         {
             wait();
+            //System.out.print(" waiting ");
         }
         catch(Exception e)
         {

@@ -17,21 +17,32 @@ public class Buffer							//Provides data and operations onto the fixed-length b
      buf_size=n;
   }
 
-  public void add(int n)
+  public void add(int n, int id, int elements)
   {
     uSem.p(); //try to acquire the semaphore
       buf_list.add(n);
-      System.out.println("Item Added");
+      System.out.println("User " + id + " adds an element " + (n+1) + "/" + elements);
+
+      //System.out.println("Item Added");
     wSem.v(); //notify waiting servers
   }
 
-  public void remove()
+  public void remove(int n, int id, int elements)
   {
     wSem.p();
     buf_list.remove(0);
-    System.out.println("Item Removed");
+    System.out.println("Server " + id + " removes an element " + (n+1) + "/" + elements);
+
+    //System.out.println("Item Removed");
     uSem.v(); //notify waiting users
   }
+
+  public int size()
+  {
+    return buf_list.size();
+  }
+
+
 
 
 }	  

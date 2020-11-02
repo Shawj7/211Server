@@ -13,12 +13,24 @@ class webserver implements Runnable
       elements=elem;
       buf=b;
     }
+
+    public int getID()
+    {
+      return id;
+    }
+
+    public int getElements()
+    {
+      return elements;
+    }
     public void run()
     {
-      while(elements>0)
+      int n=0;
+      while(n<elements)
       {
-        buf.remove();
-        elements--;
+        buf.remove(n, id, elements);
+        //System.out.println("Server " + id + " removes an element " + (n+1) + "/" + elements);
+        n++;
       }
     }
    
