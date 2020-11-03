@@ -37,14 +37,14 @@ public class startServer
 	reference=elements; //keep the total number of elements for splitting across servers	
 	for(int i=0;i<numUsers;i++) //create all users and threads and start them
 	{
-		/*if((elements%numUsers)!=0)
+		if((elements%numUsers)!=0)
 		{
 			uElemForEach=(elements%numUsers);
 		}
 		else
 		{
 			uElemForEach=(elements/numUsers);
-		}*/
+		}
 		users[i]= new user(i, uElemForEach, b);
 		elements=elements-uElemForEach; //subtract elements given from total
 		uThreads[i]=new Thread(users[i]);
@@ -52,9 +52,13 @@ public class startServer
 	}
 	for(int i=0;i<numServers;i++) //create all webservers and threads and start them
 	{
-		if(reference<wElemForEach)
+		if((reference%numServers)!=0)
 		{
-			wElemForEach=reference; //give the user remaining elements
+			wElemForEach=(reference%numServers);
+		}
+		else
+		{
+			wElemForEach=(reference/numServers);
 		}
 		servers[i]= new webserver(i, wElemForEach, b);
 		reference=reference-wElemForEach;

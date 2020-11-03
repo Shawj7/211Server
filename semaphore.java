@@ -9,7 +9,7 @@ public class semaphore
       count=value;
     }
 
-    public synchronized void p()
+    public synchronized void p(int type)
     {
       count--;
       if(count<0)
@@ -17,7 +17,8 @@ public class semaphore
         try
         {
             wait();
-            //System.out.print(" waiting ");
+            if(type==1){ System.out.println("User waiting");}
+            if(type==0){ System.out.println("Server waiting");}
         }
         catch(Exception e)
         {
