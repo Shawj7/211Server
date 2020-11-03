@@ -12,7 +12,7 @@ public class semaphore
     public synchronized void p(int type)
     {
       count--;
-      if(count<0)
+      if(count<1)
       {
         try
         {
