@@ -20,7 +20,6 @@ public class startServer
     numServers=scan.nextInt();
     System.out.println("Enter total number of elements");
 	elements=scan.nextInt();
-    //startServer start = new startServer();
 	   											//Creates execution scenario between user and webservers on buffer
         
         long startTime = System.currentTimeMillis();		
@@ -31,26 +30,52 @@ public class startServer
 	webserver servers[] = new webserver[numServers];
 	Thread uThreads[] = new Thread[numUsers];
 	Thread wThreads[] = new Thread[numServers];
-	int uElemForEach=(elements/numUsers); //elements for each user
-	int wElemForEach=(elements/numServers); //elements for each webserver
-
-	reference=elements; //keep the total number of elements for splitting across servers	
-	for(int i=0;i<numUsers;i++) //create all users and threads and start them
+	//int uElemForEach=(elements/numUsers); //elements for each user
+	//int wElemForEach=(elements/numServers); //elements for each webserver
+	reference=elements; //keep the total number of elements for splitting across servers
+	for(int i=0;i<numUsers;i++) //create all users 
 	{
-		if((elements%numUsers)!=0)
+		users[i]= new user(i, 0, b);
+	}
+	for(int i=0;i<numServers;i++) //create all servers
+	{
+		servers[i]=new webserver(i,0,b);
+	}
+	while(elements>0) //assaign elements equally to users
+	{
+		for(int i=0;i<numUsers;i++)
 		{
-			uElemForEach=(elements%numUsers);
+			if(elements<0)
+			{
+				break;
+			}
+			users[i].giveElements(1);
+			elements--;
 		}
-		else
+	}
+	while(reference>0) //assaign elements equally to servers
+	{
+		for(int i=0;i<numServers;i++)
 		{
-			uElemForEach=(elements/numUsers);
+			if(reference<0)
+			{
+				break;
+			}
+			servers[i].giveElements(1);
+			reference--;
 		}
-		users[i]= new user(i, uElemForEach, b);
-		elements=elements-uElemForEach; //subtract elements given from total
+	}
+	for(int i=0;i<numUsers;i++)
+	{
 		uThreads[i]=new Thread(users[i]);
 		uThreads[i].start();
 	}
-	for(int i=0;i<numServers;i++) //create all webservers and threads and start them
+	for(int i=0;i<numServers;i++)
+	{
+		wThreads[i]=new Thread(servers[i]);
+		wThreads[i].start();
+	}
+	/*for(int i=0;i<numServers;i++) //create all webservers and threads and start them
 	{
 		if((reference%numServers)!=0)
 		{
@@ -64,8 +89,7 @@ public class startServer
 		reference=reference-wElemForEach;
 		wThreads[i]=new Thread(servers[i]);
 		wThreads[i].start();
-	}
-	
+	}*/
 	try
 	{
 		for(int i=0; i<numUsers; i++)
@@ -82,7 +106,6 @@ public class startServer
 	{
 		System.out.println("Error");
 	}
-
 
 									
 	

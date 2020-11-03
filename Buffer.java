@@ -4,8 +4,8 @@ public class Buffer							//Provides data and operations onto the fixed-length b
   {     									
 	private LinkedList<Object> buf_list;
   private int buf_size;	
-  semaphore uSem = new semaphore(buf_size);
-  semaphore wSem = new semaphore(0);
+  semaphore uSem;
+  semaphore wSem;
   //private semaphore uSem = new semaphore(10);
   //private semaphore wSem = new semaphore(0);
 
@@ -17,11 +17,15 @@ public class Buffer							//Provides data and operations onto the fixed-length b
 	{
 	   buf_list = new LinkedList<Object>();
      buf_size=n;
+     //System.out.println(buf_list.size());
+     uSem = new semaphore(buf_size);
+     wSem = new semaphore(0);
   }
 
   public void add(int n, int id, int elements)
   {
     uSem.p(1); //try to acquire the semaphore
+
       buf_list.add(n);
       System.out.println("User " + id + " adds an element " + (n+1) + "/" + elements);
       //System.out.println("Item Added");
