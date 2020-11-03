@@ -30,7 +30,7 @@ public class semaphore
     public synchronized void v()
     {
         count++;
-        notify();
+        notifyAll();
     }
       
     

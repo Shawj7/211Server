@@ -20,6 +20,10 @@ class user implements Runnable
      {
        return elements;
      }
+     public void giveElements(int elem)
+     {
+       elements=elements+elem;
+     }
 
      public void run()
      {
